@@ -4,16 +4,16 @@
 
 
 ## Features
-- [] User Profile
-- [] Multiple level
-- [] Level up by killing Queen bee 
-- [] Show highest Score
-- [] New Life feature
-- [] Gun Power up 
-- [] Change background on every Level
-- [] Change Panda Avatar
-- [] Make faster bees appearance according to Level
-- [] Resume Game from last played level with points
+- [ ] User Profile
+- [ ] Multiple level
+- [ ] Level up by killing Queen bee 
+- [ ] Show highest Score
+- [ ] New Life feature
+- [ ] Gun Power up 
+- [ ] Change background on every Level
+- [ ] Change Panda Avatar
+- [ ] Make faster bees appearance according to Level
+- [ ] Resume Game from last played level with points
 
 
 ### Team Information
