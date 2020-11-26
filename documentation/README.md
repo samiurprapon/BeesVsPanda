@@ -15,6 +15,22 @@
 - [ ] Make faster bees appearance according to Level
 - [ ] Resume Game from last played level with points
 
+## Operating system
+> Windows/Linux/Mac OS
+
+## Usages 
+> Install Java 8  or Adopt JDK 1.8
+
+## Programming Languages 
+> Java
+
+## Tools/framework
+> Intellij IDEA
+> Scene Builder
+
+## References
+> N/A
+
 
 ### Team Information
 ```
