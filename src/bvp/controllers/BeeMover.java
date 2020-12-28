@@ -53,7 +53,7 @@ public class BeeMover extends Thread {
 				shooter.setX(1500);
 			}
 
-			bee.setImagePath("src//resources//images//BeeBlast//blast1.png"); //When bullet hits a bee, it shows a blast
+			bee.setImagePath("src//resources//images//BeeBlast//ic_blast_1.png"); //When bullet hits a bee, it shows a blast
 
 			try {
 				Thread.sleep(100);
@@ -61,7 +61,7 @@ public class BeeMover extends Thread {
 				e.printStackTrace();
 			}
 
-			bee.setImagePath("src//resources//images//Bee//Bee1.png"); //After Blast setting the image again
+			bee.setImagePath("src//resources//images//Bee//ic_bee_common.png"); //After Blast setting the image again
 
 			bee.setX(1100); //Setting it again for coming continuously
 

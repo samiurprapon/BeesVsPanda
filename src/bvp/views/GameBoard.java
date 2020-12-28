@@ -13,8 +13,8 @@ import java.awt.event.*;
 
 public class GameBoard extends JPanel implements KeyListener {
 
-	private final Shooter background1 = new Shooter (0,0,"src//resources//images/BackGrounds//BackGround1.png");
-	private final Shooter background2 = new Shooter (1000,0,"src//resources//images/BackGrounds//BackGround1.png");
+	private final Shooter background1 = new Shooter (0,0,"src//resources//drawables/layouts//ic_layout_1.png");
+	private final Shooter background2 = new Shooter (1000,0,"src//resources//drawables/layouts//ic_layout_1.png");
 
 	Shooter shooter;
 	private int shooterCount = 1;
@@ -38,13 +38,13 @@ public class GameBoard extends JPanel implements KeyListener {
 		int yBee = 23;
 
 		for (int i = 0; i < bee.length; i++) {
-			bee[i] = new Bee(xBee, yBee,"src//resources//images//Bee//Bee1.png",true);
+			bee[i] = new Bee(xBee, yBee,"src//resources//drawables//bees//ic_bee_common.png",true);
 
 			yBee += 80;
 		}
 
 		for (int i = 0; i < bullets.length; i++){
-			bullets[i] = new Bullet(-100,-316,"src//resources//images//Bullets//BulletOfShooter.png");
+			bullets[i] = new Bullet(-100,-316,"src//resources//drawables//bullets//ic_bullet_1.png");
 		}
 
 		for (Bee value : bee) {
@@ -73,7 +73,7 @@ public class GameBoard extends JPanel implements KeyListener {
 		//shooter.draw(g); //Non-animated Shooter
 
 		if (!isCollision) {
-			shooter.setImagePath("src//resources//images//Shooter//" + shooterCount + ".png");
+			shooter.setImagePath("src//resources//drawables//characters//" + shooterCount + ".png");
 			shooterCount++;
 		}
 		try {
@@ -130,7 +130,7 @@ public class GameBoard extends JPanel implements KeyListener {
 
 		if (life == 0) {
 			Font f1 = new Font("Serif", Font.BOLD, 55);
-			graphics.setColor(Color.BLACK);
+			graphics.setColor(Color.RED);
 			graphics.setFont(f1);
 			graphics.drawString("Game Over!", 360, 300);
 			graphics.drawString("Play Again", 370, 350);
@@ -170,19 +170,21 @@ public class GameBoard extends JPanel implements KeyListener {
 	public void keyPressed (KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_LEFT){
 			if (shooter.getX() > 0) {
-				shooter.setX(shooter.getX() - 4);
+				shooter.setX(shooter.getX() - 10);
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
 			if(shooter.getX() < 760) {
-				shooter.setX(shooter.getX() + 4);
+				shooter.setX(shooter.getX() + 10);
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_UP){
 			if (shooter.getY() > 7)
-				shooter.setY(shooter.getY() - 4);
+				shooter.setY(shooter.getY() - 10);
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN){
 			if (shooter.getY() < 440)
-				shooter.setY(shooter.getY() + 4);
-		} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
+				shooter.setY(shooter.getY() + 10);
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_SPACE){
 			bullets[bulletCount].setX(shooter.getX() + 100);
 			bullets[bulletCount].setY(shooter.getY() + 63);
 
