@@ -7,45 +7,45 @@ import javax.sound.sampled.Clip;
 
 public class GameSound {
 
-	public static void bulletFiredSound(){
-		try {
-			File sound = new File("src//resources//sounds//bullet_whizzing.wav");
-			AudioInputStream ais = AudioSystem.getAudioInputStream(sound);
+    public static void bulletFiredSound() {
+        try {
+            File sound = new File("src//resources//sounds//bullet_whizzing.wav");
+            AudioInputStream ais = AudioSystem.getAudioInputStream(sound);
 
-			Clip clip = AudioSystem.getClip();
-			clip.open(ais);
-			clip.start();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+            Clip clip = AudioSystem.getClip();
+            clip.open(ais);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
-	public static void bulletHitSound(){
-		try {
-			File soundHit = new File("src//resources//sounds//silencer_shot.wav");
-			AudioInputStream ais = AudioSystem.getAudioInputStream(soundHit);
+    public static void bulletHitSound() {
+        try {
+            File soundHit = new File("src//resources//sounds//silencer_shot.wav");
+            AudioInputStream ais = AudioSystem.getAudioInputStream(soundHit);
 
-			Clip clip = AudioSystem.getClip();
+            Clip clip = AudioSystem.getClip();
 
-			clip.open(ais);
-			clip.start();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+            clip.open(ais);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public static void Shooter_Bee_Collide_Sound(){
-		try {
-			File sound = new File("src//resources//sounds//blast.wav");
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(sound);
+    public static void Shooter_Bee_Collide_Sound() {
+        try {
+            File sound = new File("src//resources//sounds//blast.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(sound);
 
-			Clip clip = AudioSystem.getClip();
+            Clip clip = AudioSystem.getClip();
 
-			clip.open(audioInputStream);
-			clip.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
