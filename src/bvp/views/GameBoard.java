@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GameBoard extends JPanel implements KeyListener {
+public class GameBoard extends JPanel implements KeyListener, MouseListener {
 
     private final Shooter background1 = new Shooter(0, 0, "src//resources//drawables/layouts//ic_layout_1.png");
     private final Shooter background2 = new Shooter(1000, 0, "src//resources//drawables/layouts//ic_layout_1.png");
@@ -26,12 +26,14 @@ public class GameBoard extends JPanel implements KeyListener {
 
     public static int score = 0;
     private int life = 3;
+    private JFrame window;
 
-
-    public GameBoard() {
+    public GameBoard(JFrame window) {
         super();
+        this.window = window;
         super.addKeyListener(this);
         super.setFocusable(true);
+        super.addMouseListener(this);
         shooter = new Shooter(5, 255, null);
 
         int xBee = 1050;
@@ -213,6 +215,45 @@ public class GameBoard extends JPanel implements KeyListener {
 
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if(life ==0){
+            if(e.getX()>365&&e.getX()<635&&e.getY()>310&&e.getY()<353){
+                window.dispose();
+
+                JFrame window = new JFrame();
+
+                window.setTitle("Bee V Panda: Adventure in Jungle");
+                window.setSize(1000, 700);
+
+                GameBoard onStartBoard = new GameBoard(window);
+                window.add(onStartBoard);
+
+                window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                window.setVisible(true);
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }
 
 
