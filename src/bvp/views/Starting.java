@@ -1,13 +1,6 @@
 package bvp.views;
 
-import bvp.controllers.BeeMover;
-import bvp.controllers.BulletFiring;
-import bvp.controllers.GameSound;
-import bvp.models.Bee;
-import bvp.models.Bullet;
-import bvp.models.Shooter;
-import bvp.views.GameBoard;
-import bvp.views.OnStartBoard;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,13 +63,14 @@ public class Starting extends JPanel implements KeyListener, MouseListener {
         if(e.getX()>370&&e.getX()<565&&e.getY()>309&&e.getY()<375){
             window.dispose();
 
-            GameBoard onStartBoard = new GameBoard();
             JFrame window = new JFrame();
 
             window.setTitle("Bee V Panda: Adventure in Jungle");
             window.setSize(1000, 700);
 
+            GameBoard onStartBoard = new GameBoard(window);
             window.add(onStartBoard);
+
             window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             window.setVisible(true);
         }
