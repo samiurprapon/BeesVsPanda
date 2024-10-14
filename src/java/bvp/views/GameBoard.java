@@ -13,8 +13,8 @@ import java.awt.event.*;
 
 public class GameBoard extends JPanel implements KeyListener {
 
-    private final Shooter background1 = new Shooter(0, 0, "src//resources//drawables/layouts//ic_layout_1.png");
-    private final Shooter background2 = new Shooter(1000, 0, "src//resources//drawables/layouts//ic_layout_1.png");
+    private final Shooter background1 = new Shooter(0, 0, "/drawables/layouts/ic_layout_1.png");
+    private final Shooter background2 = new Shooter(1000, 0, "/drawables/layouts/ic_layout_1.png");
 
     Shooter shooter;
     private int shooterCount = 1;
@@ -38,13 +38,13 @@ public class GameBoard extends JPanel implements KeyListener {
         int yBee = 23;
 
         for (int i = 0; i < bee.length; i++) {
-            bee[i] = new Bee(xBee, yBee, "src//resources//drawables//bees//ic_bee_common.png", true);
+            bee[i] = new Bee(xBee, yBee, "/drawables/bees/ic_bee_common.png", true);
 
             yBee += 80;
         }
 
         for (int i = 0; i < bullets.length; i++) {
-            bullets[i] = new Bullet(-100, -316, "src//resources//drawables//bullets//ic_bullet_1.png");
+            bullets[i] = new Bullet(-100, -316, "/drawables/bullets/ic_bullet_1.png");
         }
 
         for (Bee value : bee) {
@@ -73,7 +73,7 @@ public class GameBoard extends JPanel implements KeyListener {
         //shooter.draw(g); //Non-animated Shooter
 
         if (!isCollision) {
-            shooter.setImagePath("src//resources//drawables//characters//" + shooterCount + ".png");
+            shooter.setImagePath("/drawables/characters/" + shooterCount + ".png");
             shooterCount++;
         }
         try {

@@ -54,14 +54,14 @@ public class BulletFiring extends Thread {
 
 				isHit = true;
 
-				value.setImagePath("src//resources//drawables//blasts//ic_blast_1.png"); //When bullet hits a bee, it shows a blast
+				value.setImagePath("/drawables/blasts/ic_blast_1.png"); //When bullet hits a bee, it shows a blast
 				try {
 					Thread.sleep(100);
 				} catch (Exception e) {
 					//exception handling
 				}
 
-				value.setImagePath("src//resources//drawables//bees//ic_bee_common.png"); //After Blast setting the image again
+				value.setImagePath("/drawables/bees/ic_bee_common.png"); //After Blast setting the image again
 
 				value.setX(1100);    //Bee outside of Screen Bug fixer
 				bullet.setX(2000);    //Bullet outside of Screen Bug fixer

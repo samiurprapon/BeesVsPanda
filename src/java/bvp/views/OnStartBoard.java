@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 
 public class OnStartBoard extends JPanel implements KeyListener {
 
-    ImageIcon background = new ImageIcon("src//resources//drawables/layouts//ic_layout_0.png");
+    ImageIcon background = new ImageIcon(getClass().getResource("/drawables/layouts/ic_layout_0.png"));
 
     public OnStartBoard() {
         super();
