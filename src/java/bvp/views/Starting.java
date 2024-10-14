@@ -14,7 +14,7 @@ public class Starting extends JPanel implements KeyListener, MouseListener {
         super();
         this.window = window;
         super.addMouseListener(this);
-        backgroundImage = new ImageIcon("src/resources/drawables/layouts/panda_vs_bee.png").getImage();
+        backgroundImage = new ImageIcon(getClass().getResource("/drawables/layouts/panda_vs_bee.png")).getImage();
     }
 
 

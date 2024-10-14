@@ -33,7 +33,7 @@ public class Bullet{
 	}
 
 	public void draw(@NotNull Graphics graphics){
-		ImageIcon bullet = new ImageIcon(imagePath);
+		ImageIcon bullet = new ImageIcon(getClass().getResource(imagePath));
 		graphics.drawImage(bullet.getImage(), x, y,null);
 	}
 	
