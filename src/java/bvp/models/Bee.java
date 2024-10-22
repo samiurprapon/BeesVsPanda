@@ -49,7 +49,7 @@ public class Bee {
 	}
 
 	public void draw(Graphics graphics){
-		ImageIcon icon = new ImageIcon(imagePath);
+		ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
 		graphics.drawImage(icon.getImage(), x, y, null);
 	}
 
