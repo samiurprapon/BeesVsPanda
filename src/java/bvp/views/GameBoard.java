@@ -1,10 +1,12 @@
 package bvp.views;
 
 import bvp.controllers.BeeMover;
+import bvp.controllers.BossMover;
 import bvp.controllers.BulletFiring;
 import bvp.controllers.GameSound;
 import bvp.models.Bee;
 import bvp.models.Bullet;
+import bvp.models.Level;
 import bvp.models.Shooter;
 
 import javax.swing.*;
@@ -13,14 +15,24 @@ import java.awt.event.*;
 
 public class GameBoard extends JPanel implements KeyListener, MouseListener {
 
-    private final Shooter background1 = new Shooter(0, 0, "/drawables/layouts/ic_layout_1.png");
-    private final Shooter background2 = new Shooter(1000, 0, "/drawables/layouts/ic_layout_1.png");
+    private Shooter background1;
+    private Shooter background2;
+
+    private final int level;
+    private final Level config;
+    private volatile boolean levelActive = true;
+
+    private Bee boss = null;                 //null until the boss is summoned
+    private volatile boolean bossSpawned = false;
+    private volatile boolean levelComplete = false;
+    private volatile boolean gameWon = false;
+    private int killsThisLevel = 0;
 
     Shooter shooter;
     private int shooterCount = 1;
     boolean isCollision = false;
 
-    Bee[] bee = new Bee[6];
+    Bee[] bee;
     Bullet[] bullets = new Bullet[100];
     int bulletCount = 0;
 
@@ -28,14 +40,23 @@ public class GameBoard extends JPanel implements KeyListener, MouseListener {
     private int life = 3;
     private JFrame window;
 
-    public GameBoard(JFrame window) {
+    public GameBoard(JFrame window, int level) {
         super();
         this.window = window;
+        this.level = level;
+        this.config = Level.getLevel(level);
+        if (level == 1) {
+            score = 0; //reset accumulated score on a brand-new game (level 1 / Play Again)
+        }
         super.addKeyListener(this);
         super.setFocusable(true);
         super.addMouseListener(this);
         shooter = new Shooter(5, 255, null);
 
+        background1 = new Shooter(0, 0, config.getBgPath());
+        background2 = new Shooter(1000, 0, config.getBgPath());
+
+        bee = new Bee[config.getBeeCount()];
         int xBee = 1050;
         int yBee = 23;
 
@@ -50,10 +71,78 @@ public class GameBoard extends JPanel implements KeyListener, MouseListener {
         }
 
         for (Bee value : bee) {
-            BeeMover bm = new BeeMover(value, this, shooter);
+            BeeMover bm = new BeeMover(value, this, shooter, config.getBeeDelayMs());
             bm.start();
         }
 
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public Level getConfig() {
+        return config;
+    }
+
+    public boolean isLevelActive() {
+        return levelActive;
+    }
+
+    public Bee getBoss() {
+        return boss;
+    }
+
+    public boolean isBossSpawned() {
+        return bossSpawned;
+    }
+
+    public boolean isLevelComplete() {
+        return levelComplete;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public int getKillsThisLevel() {
+        return killsThisLevel;
+    }
+
+    public void incKill() {
+        killsThisLevel++;
+    }
+
+    public boolean killsReached() {
+        return killsThisLevel >= config.getKillsToSummon();
+    }
+
+    /** Stops the common-bee swarm and spawns the level boss off the right edge. */
+    public void summonBoss() {
+        if (bossSpawned) {
+            return;
+        }
+        bossSpawned = true;
+        levelActive = false; //halts the BeeMover swarm
+        boss = new Bee(1100, 250, config.getBossImagePath(), true,
+                config.getBossHp(), 220, 170, config.getBossName(), true);
+        new BossMover(boss, this, shooter).start();
+    }
+
+    /** Called when the boss HP hits 0: award points, mark level done, win on the last level. */
+    public void onBossDefeated() {
+        if (levelComplete) {
+            return;
+        }
+        score += config.getBossPoints();
+        levelComplete = true;
+        if (boss != null) {
+            boss.setAlive(false);
+            boss.setX(2000); //move the corpse off-screen
+        }
+        if (level >= Level.maxLevel()) {
+            gameWon = true;
+        }
     }
 
     //for life of Shooter
@@ -98,6 +187,16 @@ public class GameBoard extends JPanel implements KeyListener, MouseListener {
             }
         }
 
+        if (boss != null && boss.isAlive()) {
+            boss.draw(graphics);
+        }
+
+        if (bossSpawned && !levelComplete && life != 0 && boss != null) {
+            graphics.setColor(Color.RED);
+            graphics.setFont(new Font("Serif", Font.BOLD, 30));
+            graphics.drawString("BOSS: " + config.getBossName() + "   HP " + boss.getHealth(), 230, 55);
+        }
+
         bullets[bulletCount].draw(graphics);
 
         for (Bullet bullet : bullets) {
@@ -108,7 +207,7 @@ public class GameBoard extends JPanel implements KeyListener, MouseListener {
             Font f = new Font("Serif", Font.BOLD, 24);
             graphics.setColor(Color.BLACK);
             graphics.setFont(f);
-            graphics.drawString("SCORE : " + score, 315, 600);
+            graphics.drawString("LEVEL " + level + "   SCORE : " + score, 315, 600);
         }
 
         if (life != 0) {
@@ -141,6 +240,29 @@ public class GameBoard extends JPanel implements KeyListener, MouseListener {
             graphics.setFont(f2);
             graphics.drawString("TOTAL SCORE : " + score, 390, 400);
 
+        }
+
+        if (levelComplete) {
+            graphics.setColor(new Color(0, 0, 0, 150));
+            graphics.fillRect(0, 0, 1000, 700);
+
+            if (gameWon) {
+                graphics.setColor(Color.GREEN);
+                graphics.setFont(new Font("Serif", Font.BOLD, 60));
+                graphics.drawString("YOU WIN!", 340, 290);
+                graphics.setColor(Color.YELLOW);
+                graphics.setFont(new Font("Serif", Font.BOLD, 26));
+                graphics.drawString("TOTAL SCORE : " + score, 360, 345);
+                graphics.drawString("Click to play again", 350, 395);
+            } else {
+                graphics.setColor(Color.GREEN);
+                graphics.setFont(new Font("Serif", Font.BOLD, 50));
+                graphics.drawString("LEVEL " + level + " COMPLETE!", 240, 290);
+                graphics.setColor(Color.WHITE);
+                graphics.setFont(new Font("Serif", Font.BOLD, 26));
+                graphics.drawString("Boss " + config.getBossName() + " defeated", 300, 345);
+                graphics.drawString("Click to continue", 350, 395);
+            }
         }
 
     }
@@ -191,7 +313,7 @@ public class GameBoard extends JPanel implements KeyListener, MouseListener {
 
             GameSound.bulletFiredSound();
 
-            BulletFiring fire = new BulletFiring(this, bee, bullets[bulletCount]);
+            BulletFiring fire = new BulletFiring(this, bee, bullets[bulletCount], config.getBulletDelayMs());
 
             fire.start();
             bulletCount++;
@@ -217,22 +339,28 @@ public class GameBoard extends JPanel implements KeyListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(life ==0){
-            if(e.getX()>365&&e.getX()<635&&e.getY()>310&&e.getY()<353){
-                window.dispose();
-
-                JFrame window = new JFrame();
-
-                window.setTitle("Bee V Panda: Adventure in Jungle");
-                window.setSize(1000, 700);
-
-                GameBoard onStartBoard = new GameBoard(window);
-                window.add(onStartBoard);
-
-                window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                window.setVisible(true);
+        if (life == 0) {
+            if (e.getX() > 365 && e.getX() < 635 && e.getY() > 310 && e.getY() < 353) {
+                openLevel(1); //Play Again -> fresh game (resets score)
             }
+        } else if (levelComplete) {
+            openLevel(gameWon ? 1 : level + 1); //advance to next level, or restart after winning
         }
+    }
+
+    /** Tear down this window and start a fresh one at the given level. */
+    private void openLevel(int nextLevel) {
+        window.dispose();
+
+        JFrame window = new JFrame();
+        window.setTitle("Bee V Panda: Adventure in Jungle");
+        window.setSize(1000, 700);
+
+        GameBoard next = new GameBoard(window, nextLevel);
+        window.add(next);
+
+        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        window.setVisible(true);
     }
 
     @Override

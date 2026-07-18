@@ -1,7 +1,5 @@
 package bvp.models;
 
-import com.sun.istack.internal.NotNull;
-
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
@@ -32,7 +30,7 @@ public class Bullet{
 		this.y = y;
 	}
 
-	public void draw(@NotNull Graphics graphics){
+	public void draw(Graphics graphics){
 		ImageIcon bullet = new ImageIcon(getClass().getResource(imagePath));
 		graphics.drawImage(bullet.getImage(), x, y,null);
 	}

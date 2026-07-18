@@ -11,12 +11,14 @@ public class BulletFiring extends Thread {
 	GameBoard gameBoard;
 	Bee[] bee;
 	private final Bullet bullet;
+	private final int bulletDelay;
 
 
-	public BulletFiring(GameBoard gb, Bee[] bee, Bullet bullet){
+	public BulletFiring(GameBoard gb, Bee[] bee, Bullet bullet, int bulletDelay){
 		this.gameBoard = gb;
 		this.bee = bee;
 		this.bullet = bullet;
+		this.bulletDelay = bulletDelay;
 	}
 
 	@Override
@@ -29,7 +31,7 @@ public class BulletFiring extends Thread {
 			checkCollision();
 
 			try{
-				Thread.sleep(3);
+				Thread.sleep(bulletDelay);
 			} catch(InterruptedException  ex){
 				ex.printStackTrace();
 			}
@@ -66,9 +68,28 @@ public class BulletFiring extends Thread {
 				value.setX(1100);    //Bee outside of Screen Bug fixer
 				bullet.setX(2000);    //Bullet outside of Screen Bug fixer
 
+				gameBoard.incKill(); //count common-bee kills toward summoning the boss
+				if (gameBoard.killsReached() && !gameBoard.isBossSpawned()) {
+					gameBoard.summonBoss();
+				}
+
 				break;
 			}
 
+		}
+
+		//boss collision: each hit removes 1 HP, defeating the boss at 0
+		Bee boss = gameBoard.getBoss();
+		if (boss != null && boss.isAlive()) {
+			Rectangle bossRect = new Rectangle(boss.getX(), boss.getY(), boss.getWidth(), boss.getHeight());
+			if (bulletRect.intersects(bossRect)) {
+				boss.setHealth(boss.getHealth() - 1);
+				isHit = true;
+				bullet.setX(2000);
+				if (boss.getHealth() <= 0) {
+					gameBoard.onBossDefeated();
+				}
+			}
 		}
 
 		if(isHit) {

@@ -68,7 +68,7 @@ public class Starting extends JPanel implements KeyListener, MouseListener {
             window.setTitle("Bee V Panda: Adventure in Jungle");
             window.setSize(1000, 700);
 
-            GameBoard onStartBoard = new GameBoard(window);
+            GameBoard onStartBoard = new GameBoard(window, 1);
             window.add(onStartBoard);
 
             window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

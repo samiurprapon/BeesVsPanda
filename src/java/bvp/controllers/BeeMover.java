@@ -11,21 +11,23 @@ public class BeeMover extends Thread {
 	private final Shooter shooter;
 	private final Bee bee;
 	private final GameBoard gameBoard;
+	private final int beeDelay;
 
-	public BeeMover(Bee bee, GameBoard gameBoard, Shooter shooter){
+	public BeeMover(Bee bee, GameBoard gameBoard, Shooter shooter, int beeDelay){
 		this.shooter = shooter;
 		this.gameBoard = gameBoard;
 		this.bee = bee;
+		this.beeDelay = beeDelay;
 	}
 
 	@Override
 	public void run(){
-		
-		while(bee.getX() > - 100){
+
+		while(gameBoard.isLevelActive() && bee.getX() > - 100){
 			bee.setX(bee.getX() - 1);
 
 			try {
-				Thread.sleep(10);
+				Thread.sleep(beeDelay);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -35,8 +37,11 @@ public class BeeMover extends Thread {
 			checkCollision();
 		}
 		bee.setX(1100);	//setting getX again to 1100
-		run();	//starting from the beginning
-	}			
+		//only keep cycling while the level is still active (boss phase stops the swarm)
+		if (gameBoard.isLevelActive()) {
+			run();	//starting from the beginning
+		}
+	}
 
 	public void checkCollision(){
 		Rectangle shooterRect = new Rectangle(shooter.getX(), shooter.getY(), 105, 120);
